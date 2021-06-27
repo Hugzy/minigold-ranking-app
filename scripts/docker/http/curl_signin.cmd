@@ -1,0 +1,1 @@
+curl -H "Content-Type: application/json" -X POST -d {"email":"asd@asd.com","password":"qwerty"} http://localhost:4000/api/users/sign_in -i
