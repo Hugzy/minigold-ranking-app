@@ -1,15 +1,14 @@
 defmodule RankingApp.Account.User do
   use Ecto.Schema
   import Ecto.Changeset
+  alias RankingApp.Account.Club
 
   schema "users" do
     field :email, :string
     field :is_active, :boolean, default: false
     field :password, :string, virtual: true
     field :password_hash, :string
-
-    # Add support for microseconds at the app level
-    # for this specific schema
+    belongs_to :club, Club
     timestamps()
   end
 

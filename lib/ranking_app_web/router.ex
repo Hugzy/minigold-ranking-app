@@ -18,6 +18,7 @@ defmodule RankingAppWeb.Router do
   scope "/api", RankingAppWeb do
     pipe_through [:api, :api_auth]
     resources "/users", UserController, except: [:new, :edit]
+    resources "/clubs", ClubController, except: [:new, :edit]
   end
 
     # Plug function

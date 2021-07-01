@@ -82,4 +82,67 @@ defmodule RankingApp.AccountTest do
     end
 
   end
+
+  describe "clubs" do
+    alias RankingApp.Account.Club
+
+    @valid_attrs %{city: "some city", name: "some name", postalcode: 42}
+    @update_attrs %{city: "some updated city", name: "some updated name", postalcode: 43}
+    @invalid_attrs %{city: nil, name: nil, postalcode: nil}
+
+    def club_fixture(attrs \\ %{}) do
+      {:ok, club} =
+        attrs
+        |> Enum.into(@valid_attrs)
+        |> Account.create_club()
+
+      club
+    end
+
+    test "list_clubs/0 returns all clubs" do
+      club = club_fixture()
+      assert Account.list_clubs() == [club]
+    end
+
+    test "get_club!/1 returns the club with given id" do
+      club = club_fixture()
+      assert Account.get_club!(club.id) == club
+    end
+
+    test "create_club/1 with valid data creates a club" do
+      assert {:ok, %Club{} = club} = Account.create_club(@valid_attrs)
+      assert club.city == "some city"
+      assert club.name == "some name"
+      assert club.postalcode == 42
+    end
+
+    test "create_club/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Account.create_club(@invalid_attrs)
+    end
+
+    test "update_club/2 with valid data updates the club" do
+      club = club_fixture()
+      assert {:ok, %Club{} = club} = Account.update_club(club, @update_attrs)
+      assert club.city == "some updated city"
+      assert club.name == "some updated name"
+      assert club.postalcode == 43
+    end
+
+    test "update_club/2 with invalid data returns error changeset" do
+      club = club_fixture()
+      assert {:error, %Ecto.Changeset{}} = Account.update_club(club, @invalid_attrs)
+      assert club == Account.get_club!(club.id)
+    end
+
+    test "delete_club/1 deletes the club" do
+      club = club_fixture()
+      assert {:ok, %Club{}} = Account.delete_club(club)
+      assert_raise Ecto.NoResultsError, fn -> Account.get_club!(club.id) end
+    end
+
+    test "change_club/1 returns a club changeset" do
+      club = club_fixture()
+      assert %Ecto.Changeset{} = Account.change_club(club)
+    end
+  end
 end
